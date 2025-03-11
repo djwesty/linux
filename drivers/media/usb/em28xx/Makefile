@@ -10,25 +10,16 @@ em28xx-rc-objs := em28xx-input.o
 obj-$(CONFIG_VIDEO_EM28XX) += em28xx.o
 obj-$(CONFIG_VIDEO_EM28XX_V4L2) += em28xx-v4l.o
 obj-$(CONFIG_VIDEO_EM28XX_ALSA) += em28xx-alsa.o
-# em28xx-dvb-objs += lib.o em28xx-dvb
 obj-$(CONFIG_VIDEO_EM28XX_DVB) += em28xx-dvb.o
-obj-$(CONFIG_VIDEO_EM28XX_RC) += em28xx-rc.o # delete?
-# obj-m += em2174.o
+obj-$(CONFIG_VIDEO_EM28XX_RC) += em28xx-rc.o
 
-# Option 1: Add Rust object file to em28xx-dvb-objs
-# em28xx-dvb-objs := em28xx-dvb.o lib.o
-# $(info em28xx-dvb: $(em28xx-dvb-objs))
-# rust-lib := lib.o
-em28xx-dvb-objs += em28xx_dvb_support.o em28xx-dvb-driver.o
+ifdef CONFIG_RUST
+	# Approach 1: Include rust lib file to support existing (renamed) dvb  module
+	em28xx-dvb-objs += em28174_dvb_lib.o em28xx-dvb-2.o
 
-# em28xx-dvb-objs += lib.o
-# $(info em28xx-dvb: $(obj-m))
-
-
-# Option 2: Build this as an independent module to be used by em28xx-dvb
-# obj-m += lib.o
-
+	# Approach 2: Build new specific sub-module
+	obj-$(CONFIG_VIDEO_EM28XX_DVB) += em28174_dvb.o
+endif
 
 ccflags-y += -I $(srctree)/drivers/media/tuners
 ccflags-y += -I $(srctree)/drivers/media/dvb-frontends
-# $(info em28xx-dvb: $(em28xx-dvb-objs))

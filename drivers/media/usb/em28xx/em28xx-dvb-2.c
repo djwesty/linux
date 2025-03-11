@@ -1422,17 +1422,10 @@ static int em28174_dvb_init_hauppauge_wintv_dualhd_dvb(struct em28xx *dev)
 	return 0;
 }
 
-/* Rust */
-// #ifdef CONFIG_RUST
-// char hello_from_rust(void);
-// #else
-// static inline char hello_from_rust(void) { return '\0'; }
-// #endif
-// char *rust_fmt_argument(char *buf, char *end, void *ptr);
-//this one
+// CS533 work
 static int em28174_dvb_init_hauppauge_wintv_dualhd_01595(struct em28xx *dev)
 {
-	hello_from_rust();
+	em28174_helper();
 	struct em28xx_dvb *dvb = dev->dvb;
 	struct i2c_adapter *adapter;
 	struct lgdt3306a_config lgdt3306a_config =  {};
