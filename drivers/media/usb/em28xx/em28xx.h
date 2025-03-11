@@ -843,4 +843,7 @@ void em28xx_free_device(struct kref *ref);
 int em28xx_detect_sensor(struct em28xx *dev);
 int em28xx_init_camera(struct em28xx *dev);
 
+/* CS533 Rust */
+extern char hello_from_rust(void);
+
 #endif
