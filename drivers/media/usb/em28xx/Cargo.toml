@@ -1,0 +1,14 @@
+[package]
+name = "em28xx"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "gen_bindings"
+path = "gen_bindings.rs"
+
+[build-dependencies]
+bindgen = "0.71.1"  # Check for the latest version
+
+[dependencies]
+bindgen = "0.71.1"  # Check for the latest version

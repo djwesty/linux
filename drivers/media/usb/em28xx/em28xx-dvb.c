@@ -1425,8 +1425,11 @@ static int em28174_dvb_init_hauppauge_wintv_dualhd_dvb(struct em28xx *dev)
 // CS533 work
 static int em28174_dvb_init_hauppauge_wintv_dualhd_01595(struct em28xx *dev)
 {
-	em28174_helper();
+
 	struct em28xx_dvb *dvb = dev->dvb;
+	// dprintk(1,"CS533: C code before %d", 1);
+	em28174_helper(dvb);
+	// dprintk(1,"CS533: C code after %d", 1)
 	struct i2c_adapter *adapter;
 	struct lgdt3306a_config lgdt3306a_config =  {};
 	struct si2157_config si2157_config = {};

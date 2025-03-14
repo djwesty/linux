@@ -20,6 +20,7 @@ CONFIG_MODVERSIONS=n
 mokutil --sb-state
 scripts/config --disable CONFIG_SYSTEM_TRUSTED_KEYS
 scripts/config --disable CONFIG_SYSTEM_REVOCATION_KEYS
+PROMPT_DIRTIM=1
 ```
 
 [blog](https://medium.com/@alessandrozanni.dev/rust-in-kernel-development-1aea34e5c4b0)
@@ -65,12 +66,46 @@ make -j$(nproc) modules -C ../../../.. M=$(pwd) LLVM=/home/djw2/Documents/llvm/b
 ```
 
 
-### Rust stuff
+### Rust make stuff
 ```
-make -j$(nproc) LLVM=/home/djw2/Documents/llvm/bin/ allnoconfig rust.config
+make -j$(nproc) LLVM=/home/djw2/Documents/llvm/bin/ alldefconfig rust.config
 make -j$(nproc) LLVM=/home/djw2/Documents/llvm/bin/ rustavailable
 make -j$(nproc) LLVM=/home/djw2/Documents/llvm/bin/ rust-analyzer
 ```
+
+### Rust Binding stuff
+```
+bindgen \
+--allowlist-type em28xx_dvb \
+--allowlist-file em28xx-dvb.c \
+--opaque-type fe lock  nfeeds adapter demux dmxdev fe_hw fe_mem net pll_mutex dont_attach_fe1 lna_gpio i2c_client_demod i2c_client_tuner i2c_client_sec \
+-- --detect_include_paths \
+-o bindings.rs
+```
+
+```
+bindgen \
+--clang_args=I~/Documents/linux \
+--allowlist-type em28xx_dvb \
+--allowlist-file em28xx-dvb.c \
+--opaque-type fe \
+--opaque-type lock \
+--opaque-type nfeeds \
+--opaque-type adapter \
+--opaque-type demux \
+--opaque-type dmxdev \
+--opaque-type fe_hw \
+--opaque-type fe_mem \
+--opaque-type net \
+--opaque-type pll_mutex \
+--opaque-type dont_attach_fe1 \
+--opaque-type lna_gpio \
+--opaque-type i2c_client_demod \
+--opaque-type i2c_client_tuner \
+--opaque-type i2c_client_sec \
+-o bindings.rs
+```
+
 
 ### Mod Info
 ```
@@ -96,35 +131,35 @@ sudo cp /home/djw2/Documents/linux/drivers/media/usb/em28xx/em28xx-dvb.ko .
 ```
 
 
-Load 
+### Load 
 ```
 sudo modprobe em28xx_dvb
 ```
 
 
-Update module dependencies
+### Update module dependencies
 ```
 sudo depmod -a
 ```
 
 
-Verify
+### Verify
 ```
 lsmod | grep em28xx-dvb
 modinfo em28xx-dvb
 ```
 
-Logs
+### Logs
 ```
 sudo dmesg --follow | grep em28xx_dvb
 ```
 
-Test
+### Test
 ```
 dvbv5-zap -c dvb_channel.conf -CUS -IZAP "KATU"
 ```
 
-Unload
+### Unload
 ```
 sudo rmmod em28xx_dvb
 ```
