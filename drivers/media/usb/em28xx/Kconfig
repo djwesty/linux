@@ -81,3 +81,9 @@ config VIDEO_EM28XX_RC
 	select BITREVERSE
 	help
 	  Enables Remote Controller support on em28xx driver.
+
+config VIDEO_EM28174_DVB
+	tristate "Sub Support for em28174 TV cards"
+	depends on VIDEO_EM28XX_DVB
+	help
+	  This supports specifically Empiatech em28174 chips for TV tuner cards 
