@@ -3,7 +3,7 @@
 //! This is an example Rust helper function to support the Em28174 subset of em28xx-dvb.
 
 use kernel::pr_info;
-const __LOG_PREFIX: &[u8] = b"em28xx  ";
+const __LOG_PREFIX: &[u8] = b"rust_kernel\0";
 #[repr(C)]
 struct dvb_frontend;
 #[repr(C)]
@@ -51,13 +51,45 @@ pub struct em28xx_dvb {
     i2c_client_sec: *mut i2c_client,
 }
 
-/// A quick test of calling rust code from a Kernel C module
+
+
+/// Hello
 #[no_mangle]
-pub extern "C" fn em28174_helper(dev: *mut em28xx_dvb) -> u8 {
-    pr_info!("CS533: nope");
-    unsafe {
-        // pr_info!("CS533: feeds {}", (*dev).nfeeds);
-        // pr_info!("CS533: lna_gpio {}", (*dev).lna_gpio);
-    }
+pub extern "C" fn hello_from_rust() -> u8 {
+    pr_info!("CS533: Hello From Rust!");
     0
+}
+
+const PRIMARY_TS: i32 = 0;
+
+/// Get address from em28xx->ts
+#[no_mangle]
+pub extern "C" fn get_em28174_addr_from_ts(ts: i32) -> u8 {
+    unsafe {
+        pr_info!("CS533: get_em28174_addr: ts {}", ts);
+        if ts == PRIMARY_TS {
+            0x59
+        } else {
+            0x0e
+        }
+    }
+}
+
+#[repr(C)]
+pub struct em28xx {
+    ts: i32,
+}
+
+/// Get address from em28xx->ts
+#[no_mangle]
+pub extern "C" fn get_em28174_addr(dev: *mut em28xx) -> u8 {
+    unsafe {
+        let ts: i32 = (*dev).ts;
+        pr_info!("CS533: get_em28174_addr: dev->ts {}", ts);
+        if ts == PRIMARY_TS {
+            0x59
+        } else {
+            0x0e
+        }
+    }
 }

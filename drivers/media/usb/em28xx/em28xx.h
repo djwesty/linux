@@ -844,6 +844,9 @@ int em28xx_detect_sensor(struct em28xx *dev);
 int em28xx_init_camera(struct em28xx *dev);
 
 /* CS533 Rust */
-extern char em28174_helper(void);
+// extern char em28174_helper(void);
+extern unsigned char get_em28174_addr_from_ts(int ts);
+extern unsigned char get_em28174_addr(struct em28xx *dev);
+// extern char hello_from_rust(void);
 
 #endif

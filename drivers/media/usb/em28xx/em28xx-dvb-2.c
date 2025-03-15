@@ -1425,7 +1425,6 @@ static int em28174_dvb_init_hauppauge_wintv_dualhd_dvb(struct em28xx *dev)
 // CS533 work
 static int em28174_dvb_init_hauppauge_wintv_dualhd_01595(struct em28xx *dev)
 {
-	em28174_helper();
 	struct em28xx_dvb *dvb = dev->dvb;
 	struct i2c_adapter *adapter;
 	struct lgdt3306a_config lgdt3306a_config =  {};
@@ -1436,8 +1435,9 @@ static int em28174_dvb_init_hauppauge_wintv_dualhd_01595(struct em28xx *dev)
 	lgdt3306a_config = hauppauge_01595_lgdt3306a_config;
 	lgdt3306a_config.fe = &dvb->fe[0];
 	lgdt3306a_config.i2c_adapter = &adapter;
-	addr = (dev->ts == PRIMARY_TS) ? 0x59 : 0x0e;
-
+	dprintk(1,"CS533: C code ts value %d",dev->ts);
+	// addr = (dev->ts == PRIMARY_TS) ? 0x59 : 0x0e; // Original C code
+	addr = get_em28174_addr(dev);		// Rust abstraction
 	dvb->i2c_client_demod = dvb_module_probe("lgdt3306a", NULL,
 						 &dev->i2c_adap[dev->def_i2c_bus],
 						 addr, &lgdt3306a_config);

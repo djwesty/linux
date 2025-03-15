@@ -18,10 +18,7 @@ struct Em28174 {
 
 impl Module for Em28174 {
     fn init(_module: &'static ThisModule) -> Result<Self> {
-        pr_info!("CS533: Initializing module\n");
-        // let reg = faux::Registration::new(c_stThis is an example Rust helper functionr!("em28174-dvb-sample-device"))?;
-        // dev_info!(reg.as_ref(), "Hello from faux device!\n");
-        // Ok(Self { _reg: reg })
+        pr_info!("CS533: DJW2 Initializing custom em28174 module\n");
         Ok(Self {})
     }
 }
